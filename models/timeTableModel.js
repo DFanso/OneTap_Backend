@@ -12,29 +12,7 @@ const lectureSchema = new mongoose.Schema({
   location: String,
 });
 
-const batchSchema = new mongoose.Schema({
-  name: String,
-  lectures: [lectureSchema],
-});
 
-const degreeSchema = new mongoose.Schema({
-  name: String,
-  batches: [batchSchema],
-});
-
-const facultySchema = new mongoose.Schema({
-  name: String,
-  degrees: [degreeSchema],
-});
-
-const Lecture = mongoose.model('Lecture', lectureSchema);
-const Batch = mongoose.model('Batch', batchSchema);
-const Degree = mongoose.model('Degree', degreeSchema);
-const Faculty = mongoose.model('Faculty', facultySchema);
+const Lecture = mongoose.model("Lecture",lectureSchema)
 
 module.exports = Lecture;
-module.exports = Batch;
-module.exports = Degree;
-module.exports = Faculty;
-
-
