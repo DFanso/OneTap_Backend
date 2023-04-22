@@ -3,6 +3,7 @@ const connectDB = require("./db");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRouter");
+const staffRouter = require("./routes/staffRouter");
 const timeTableRouter = require("./routes/timeTableRouter");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const paypalRouter = require('./routes/paypalRouter');
@@ -14,7 +15,10 @@ connectDB()
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); //To parse JSON Data
-app.use(cors());
+app.use(cors({
+    origin: 'http://192.168.1.5:3000' // Replace this with the origin you want to allow
+  }));
+  
 
 app.get("/", (req, res) => {
     res.send('API is running');
@@ -74,7 +78,9 @@ app.get('/create-payment', (req, res) => {
 // PayPal Code End
 
 app.use('/api/user', userRouter)
+app.use('/api/staff', staffRouter)
 app.use('/api/time', timeTableRouter)
+
 
 
 // Error
