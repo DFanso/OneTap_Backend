@@ -10,6 +10,7 @@ const lectureSchema = new mongoose.Schema({
   startTime: String,
   endTime: String,
   location: String,
+  staffId: String,
 });
 
 
