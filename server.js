@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRouter");
 const staffRouter = require("./routes/staffRouter");
+const assignmentRouter = require("./routes/assignmentRouter");
 const timeTableRouter = require("./routes/timeTableRouter");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const paypalRouter = require('./routes/paypalRouter');
@@ -79,6 +80,7 @@ app.get('/create-payment', (req, res) => {
 
 app.use('/api/user', userRouter)
 app.use('/api/staff', staffRouter)
+app.use('/api/assignment', assignmentRouter)
 app.use('/api/time', timeTableRouter)
 
 
