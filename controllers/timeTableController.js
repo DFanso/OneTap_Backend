@@ -7,9 +7,33 @@ const Staff = require("../models/staffModel");
 
 const insertUser = asyncHandler(async (req, res) => {
   console.log(req.body);
-  const { date,subject,faculty,degree,batch,startTime,endTime,location,staffId } = req.body;
+  const {
+    date,
+    subject,
+    faculty,
+    degree,
+    batch,
+    startTime,
+    endTime,
+    location,
+    staffId,
+    geofenceID,
+    duration,
+  } = req.body;
 
-  if (!date || !subject || !faculty || !degree || !batch || !startTime || !endTime || !location || !staffId) {
+  if (
+    !date ||
+    !subject ||
+    !faculty ||
+    !degree ||
+    !batch ||
+    !startTime ||
+    !endTime ||
+    !location ||
+    !staffId ||
+    !geofenceID ||
+    !duration
+  ) {
     return res.status(400).json({
       message: "Please enter all the fields",
     });
@@ -25,6 +49,8 @@ const insertUser = asyncHandler(async (req, res) => {
     endTime,
     location,
     staffId,
+    geofenceID,
+    duration,
   });
 
   if (lecture) {
@@ -45,11 +71,11 @@ const insertUser = asyncHandler(async (req, res) => {
 
 const getLectureData = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  const lectures = await Lecture.find({ 
-    batch: user.batch, 
+  const lectures = await Lecture.find({
+    batch: user.batch,
     degree: user.degree,
   });
-  
+
   if (lectures.length > 0) {
     res.json(lectures);
   } else {
@@ -57,14 +83,13 @@ const getLectureData = asyncHandler(async (req, res) => {
     throw new Error("Lectures not found");
   }
 });
-
 
 const getStaffLectureData = asyncHandler(async (req, res) => {
   const staff = await Staff.findById(req.staff._id);
-  const lectures = await Lecture.find({ 
-    staffId: staff.staffId, 
+  const lectures = await Lecture.find({
+    staffId: staff.staffId,
   });
-  
+
   if (lectures.length > 0) {
     res.json(lectures);
   } else {
@@ -73,5 +98,31 @@ const getStaffLectureData = asyncHandler(async (req, res) => {
   }
 });
 
+lectureDetailsByUserID = async (req, res) => {
+  try {
+    const user = await User.findById(req.body.studentID);
+    const lectures = await Lecture.find({});
 
-module.exports = {insertUser, getLectureData, getStaffLectureData};
+    const relevantLectures = lectures.filter(
+      (lecture) =>
+        lecture.degree === user.degree &&
+        lecture.batch === user.batch &&
+        lecture.faculty === user.faculty
+    );
+
+    if (relevantLectures.length === 0) {
+      res.status(404).json({ message: "No relevant lectures found." });
+    } else {
+      res.status(200).json(relevantLectures);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching data" });
+  }
+};
+
+module.exports = {
+  insertUser,
+  getLectureData,
+  getStaffLectureData,
+  lectureDetailsByUserID,
+};
