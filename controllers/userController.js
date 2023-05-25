@@ -95,4 +95,30 @@ const getUserProfile = asyncHandler(async (req, res) => {
       throw new Error("User not found");
     }
   });
-module.exports = {registerUser ,authUser, getUserProfile};
+
+  const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.json(users);
+  });
+
+  const getUserProfileById = asyncHandler(async (req, res) => {
+    const user = await User.findOne({ id: req.params.id });
+    if (user) {
+      res.json({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+        dob: user.dob,
+        degree: user.degree,
+        batch: user.batch,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  });
+  
+  
+module.exports = {registerUser ,authUser, getUserProfile, getAllUsers,getUserProfileById};

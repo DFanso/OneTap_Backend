@@ -73,5 +73,9 @@ const getStaffLectureData = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllLectures = asyncHandler(async (req, res) => {
+  const lectures = await Lecture.find({});
+  res.json(lectures);
+});
 
-module.exports = {insertUser, getLectureData, getStaffLectureData};
+module.exports = {insertUser, getLectureData, getStaffLectureData,getAllLectures};
