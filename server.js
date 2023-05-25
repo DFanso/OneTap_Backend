@@ -17,7 +17,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); //To parse JSON Data
 app.use(cors({
-    origin: 'http://192.168.1.5:3000' // Replace this with the origin you want to allow
+    origin: ['http://192.168.1.5:4000', 'http://localhost:5000'] // Replace this with the origin you want to allow
   }));
   
 
@@ -90,7 +90,7 @@ app.use(notFound)
 app.use(errorHandler)
 
 // Set the listening port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

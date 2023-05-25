@@ -95,4 +95,27 @@ const getStaffProfile = asyncHandler(async (req, res) => {
       throw new Error("User not found");
     }
   });
-module.exports = {registerStaff ,authStaff, getStaffProfile};
+  const getAllStaffs = asyncHandler(async (req, res) => {
+    const staffs = await Staff.find({});
+    res.json(staffs);
+  });
+
+  const getStaffProfileById = asyncHandler(async (req, res) => {
+    const staff = await Staff.findOne({ id: req.params.id });
+    if (staff) {
+      res.json({
+        id: staff._id,
+        username: staff.username,
+        email: staff.email,
+        phone: staff.phone,
+        address: staff.address,
+        dob: staff.dob,
+        degree: staff.degree,
+        batch: staff.batch,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  });
+module.exports = {registerStaff ,authStaff, getStaffProfile,getAllStaffs, getStaffProfileById};
